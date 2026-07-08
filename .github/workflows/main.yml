@@ -1,6 +1,5 @@
 name: Build Super Meat Boy
 
-# Triggers the workflow on pushes to the master or main branch
 on:
   push:
     branches: [ "master", "main" ]
@@ -23,28 +22,24 @@ jobs:
 
     - name: Compile Java Code
       run: |
-        # Navigate to the project root where src and resources live
-        cd djarotech/supermeatboy/Supermeatboy-master/SupermeatBoy
+        # Change this if your folder is named differently in GitHub
+        cd SupermeatBoy
         
-        # Create an output directory for the compiled .class files
         mkdir -p out
-        
-        # Find all .java files in the src directory and compile them into /out
         find src -name "*.java" > sources.txt
         javac -d out @sources.txt
 
     - name: Package into Executable JAR
       run: |
-        cd djarotech/supermeatboy/Supermeatboy-master/SupermeatBoy
+        cd SupermeatBoy
         
-        # Create a runnable jar file, setting app.MeatBoyFrame as the Main Class
         jar cfe SuperMeatBoy.jar app.MeatBoyFrame -C out .
 
     - name: Upload Playable Artifact
       uses: actions/upload-artifact@v4
       with:
         name: SuperMeatBoy-Release
-        # Upload both the compiled JAR and the resources folder together
+        # Update these paths to match the cd command above
         path: |
-          djarotech/supermeatboy/Supermeatboy-master/SupermeatBoy/SuperMeatBoy.jar
-          djarotech/supermeatboy/Supermeatboy-master/SupermeatBoy/resources/
+          SupermeatBoy/SuperMeatBoy.jar
+          SupermeatBoy/resources/
